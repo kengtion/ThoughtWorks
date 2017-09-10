@@ -27,7 +27,7 @@ public class GymBean {
     /*
         本场馆总收入
      */
-    private double totalIncome = 0;
+    private int totalIncome = 0;
 
     /*
         预定体育场
@@ -59,6 +59,7 @@ public class GymBean {
         for (OrderBean orderBean : orderBeanList) {
             if (orderBean.equals(order)) {
                 orderBean.setCanceld(true);
+                orderBean.setIncome(orderBean.getIncome()*(orderBean.isWeekend()?0.25:0.5));
                 return true;
             }
         }
@@ -90,7 +91,7 @@ public class GymBean {
         Tag = tag;
     }
 
-    public double getTotalIncome() {
+    public int getTotalIncome() {
         return totalIncome;
     }
 }

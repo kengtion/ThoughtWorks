@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Created by 洪坤峰 on 2017/9/9.
@@ -20,7 +21,7 @@ public class InputFormatUtil {
     public static OrderBean generateOrder(String input) {
         OrderBean order = new OrderBean();
         String[] params = input.split(" ");
-        if (!match(input)||!inputCheck(params))//检查输入合法性
+        if (!inputCheck(params))//检查输入合法性
             return null;
         order.setUserId(params[0]);
         order.setDate(params[1]);
@@ -30,7 +31,7 @@ public class InputFormatUtil {
         order.setEndHour(hours[1]);
         order.setGymNo(getIndex(params[3]));
         order.setRawInput(input);
-        if (params.length == 4)
+        if (params.length == 5)
             order.setCanceld(true);
         return order;
     }
@@ -38,28 +39,18 @@ public class InputFormatUtil {
     /*
         输入格式检查
      */
-    public static boolean match(String input) {
-        String pattern = ".*\\s" +
-                "(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})" +
-                "-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))" +
-                "|((0[469]|11)-(0[1-9]|[12][0-9]|30))" +
-                "|(02-(0[1-9]|[1][0-9]|2[0-8]))))" +
-                "|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|" +
-                "((0[48]|[2468][048]|[3579][26])00))-02-29)";
-        return true;
+    public static boolean matchPattern(String input){
+        String yearPattern = "(\\S+) ((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29) ) (\\d{2}:00~(\\d{2}):00) [ABCD]( C)?$";
+        return Pattern.matches(yearPattern ,input);
     }
 
     /*
         输入有效性检查
      */
     public static boolean inputCheck(String[] params) {
-        if (params.length != 4 || params.length != 5) {//输入参数数量校验
-            System.out.print(OrderBean.reject);
+        int[] hours = getStartHourAndEndHour(params[2]);
+        if(hours[0]>=hours[1])
             return false;
-        } else if (params.length == 5 && !params[4].equals("C")) {//取消订单最后一位是否为C
-            System.out.print(OrderBean.reject);
-            return false;
-        }
         return true;
     }
 

@@ -6,8 +6,8 @@ package cn.kengtion.Bean;
  */
 public class OrderBean {
 
-    public static final String reject = "Error: the booking is invalid!";
-    public static final String accept = "Success: the booking is accepted!";
+    public static final String reject = "Error: the booking is invalid!\n";
+    public static final String accept = "Success: the booking is accepted!\n";
 
     /*
         用户ID
@@ -75,7 +75,7 @@ public class OrderBean {
             } else if (startHour <= 20 && endHour <= 20) {
                 return 80 * (endHour - startHour);
             } else if (startHour <= 22 && endHour <= 22) {
-                return 600 * (endHour - startHour);
+                return 60 * (endHour - startHour);
             } else if (startHour <= 12 && endHour > 12) {
                 return calcuteIncome(startHour, 12) + calcuteIncome(12, endHour);
             } else if (startHour <= 18 && endHour > 18) {
@@ -97,6 +97,8 @@ public class OrderBean {
             sb.append(date).append(" ").append(startHour).append(":00~");
         if (endHour < 10)
             sb.append("0").append(endHour).append(":00 ");
+        else
+            sb.append(endHour).append(":00 ");
         if (isCanceld) {
             if (isWeekend) {
                 income = calcuteIncome(startHour, endHour) * 0.25;
@@ -107,7 +109,7 @@ public class OrderBean {
             }
         } else {
             income = calcuteIncome(startHour, endHour);
-            sb.append(income).append("元\n");
+            sb.append((int)income).append("元\n");
         }
         return sb.toString();
     }
@@ -191,5 +193,9 @@ public class OrderBean {
 
     public double getIncome() {
         return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
     }
 }

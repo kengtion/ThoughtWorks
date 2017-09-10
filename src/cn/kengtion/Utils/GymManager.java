@@ -2,6 +2,7 @@ package cn.kengtion.Utils;
 
 import cn.kengtion.Bean.GymBean;
 import cn.kengtion.Bean.OrderBean;
+import com.sun.org.apache.xpath.internal.operations.Or;
 
 /**
  * Created by 洪坤峰 on 2017/9/9.
@@ -37,9 +38,26 @@ public class GymManager {
         return this.gyms[no].cancelBook(order);
     }
 
+    public void executeCommand(String input) {
+        if (InputFormatUtil.matchPattern(input)) {
+            OrderBean order = InputFormatUtil.generateOrder(input);
+            if (order == null) {
+                outputExecuteResult(false);
+                return;
+            }if (!order.isCanceld() && gyms[order.getGymNo()].bookGym(order)) {
+                outputExecuteResult(true);
+            } else if (order.isCanceld() && gyms[order.getGymNo()].cancelBook(order)) {
+                outputExecuteResult(true);
+            } else {
+                outputExecuteResult(false);
+            }
+        } else
+            outputExecuteResult(false);
+    }
+
     //输出收入情况
     public void outputIncome() {
-        double totalIncome = 0;
+        int totalIncome = 0;
         StringBuilder sb = new StringBuilder();
         sb.append("收入汇总\n");
         sb.append("---\n");
@@ -51,5 +69,12 @@ public class GymManager {
         sb.append(gyms[3].toString()).append("\n").append("---\n");
         sb.append("总计: ").append(totalIncome).append("元");
         System.out.println(sb.toString());
+    }
+
+    public void outputExecuteResult(boolean isAccept) {
+        if (isAccept)
+            System.out.print(OrderBean.accept);
+        else
+            System.out.print(OrderBean.reject);
     }
 }
