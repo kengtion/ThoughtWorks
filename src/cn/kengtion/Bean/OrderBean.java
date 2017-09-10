@@ -70,11 +70,11 @@ public class OrderBean {
         } else {
             if (startHour <= 12 && endHour <= 12) {
                 return 30 * (endHour - startHour);
-            } else if (startHour <= 18 && endHour <= 18) {
+            } else if (startHour <= 18 && endHour <= 18 && startHour >= 12 && endHour >= 12) {
                 return 50 * (endHour - startHour);
-            } else if (startHour <= 20 && endHour <= 20) {
+            } else if (startHour <= 20 && endHour <= 20 && startHour >= 18 && endHour >= 18) {
                 return 80 * (endHour - startHour);
-            } else if (startHour <= 22 && endHour <= 22) {
+            } else if (startHour <= 22 && endHour <= 22 && startHour >= 20 && endHour >= 20) {
                 return 60 * (endHour - startHour);
             } else if (startHour <= 12 && endHour > 12) {
                 return calcuteIncome(startHour, 12) + calcuteIncome(12, endHour);
@@ -109,7 +109,7 @@ public class OrderBean {
             }
         } else {
             income = calcuteIncome(startHour, endHour);
-            sb.append((int)income).append("元\n");
+            sb.append((int) income).append("元\n");
         }
         return sb.toString();
     }

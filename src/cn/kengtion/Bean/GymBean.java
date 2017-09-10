@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 /**
  * Created by 洪坤峰 on 2017/9/9.
  */
@@ -73,6 +72,7 @@ public class GymBean {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("场地:").append(Tag).append("\n");
+        totalIncome = 0;
         for (OrderBean orderBean : orderBeanList) {
             totalIncome += orderBean.getIncome();
             sb.append(orderBean.toString());

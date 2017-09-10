@@ -67,6 +67,7 @@ public class GymManager {
             sb.append("\n");
         }
         sb.append(gyms[3].toString()).append("\n").append("---\n");
+        totalIncome+=gyms[3].getTotalIncome();
         sb.append("总计: ").append(totalIncome).append("元");
         System.out.println(sb.toString());
     }
