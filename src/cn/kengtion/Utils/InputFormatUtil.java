@@ -1,5 +1,6 @@
 package cn.kengtion.Utils;
 
+import cn.kengtion.Bean.AbstractOrder;
 import cn.kengtion.Bean.OrderBean;
 
 import java.text.DateFormat;
@@ -21,8 +22,8 @@ public class InputFormatUtil {
      * @param input the input
      * @return the order bean
      */
-    public static OrderBean generateOrder(String input) {
-        OrderBean order = new OrderBean();
+    public static AbstractOrder generateOrder(String input) {
+        AbstractOrder order = new OrderBean();
         String[] params = input.split(" ");
         if (!inputCheck(params))//检查输入合法性
             return null;

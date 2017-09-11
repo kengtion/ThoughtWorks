@@ -1,7 +1,8 @@
 package cn.kengtion.Utils;
 
+import cn.kengtion.Bean.AbstractGym;
+import cn.kengtion.Bean.AbstractOrder;
 import cn.kengtion.Bean.GymBean;
-import cn.kengtion.Bean.OrderBean;
 
 /**
  * Created by 洪坤峰 on 2017/9/9.
@@ -10,7 +11,7 @@ public class GymManager {
     /*
         体育场数组
      */
-    private GymBean[] gyms = new GymBean[4];
+    private AbstractGym[] gyms = new AbstractGym[4];
 
 
     /**
@@ -36,7 +37,7 @@ public class GymManager {
      * @param order 订单
      * @return
      */
-    public boolean bookGym(OrderBean order) {
+    public boolean bookGym(AbstractOrder order) {
         return this.gyms[order.getGymNo()].bookGym(order);
     }
 
@@ -46,7 +47,7 @@ public class GymManager {
      * @param order the order
      * @return the boolean
      */
-    public boolean cancelBook(OrderBean order) {
+    public boolean cancelBook(AbstractOrder order) {
         return this.gyms[order.getGymNo()].cancelBook(order);
     }
 
@@ -60,7 +61,7 @@ public class GymManager {
             return outputIncome();
         }else if (InputFormatUtil.matchPattern(input)) {
             int status;
-            OrderBean order = InputFormatUtil.generateOrder(input);
+            AbstractOrder order = InputFormatUtil.generateOrder(input);
             if(order == null){
                 status = 1;
             }else {
@@ -108,16 +109,16 @@ public class GymManager {
     public void outputExecuteResult(int status) {
         switch (status) {
             case 0:
-                System.out.print(OrderBean.accept);
+                System.out.print(AbstractOrder.accept);
                 break;
             case 1:
-                System.out.print(OrderBean.invalid);
+                System.out.print(AbstractOrder.invalid);
                 break;
             case 2:
-                System.out.print(OrderBean.conflit);
+                System.out.print(AbstractOrder.conflit);
                 break;
             case 3:
-                System.out.print(OrderBean.notExist);
+                System.out.print(AbstractOrder.notExist);
                 break;
         }
     }

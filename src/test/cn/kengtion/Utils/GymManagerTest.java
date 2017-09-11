@@ -1,10 +1,8 @@
 package test.cn.kengtion.Utils;
 
-import cn.kengtion.Bean.OrderBean;
 import cn.kengtion.Utils.GymManager;
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
+
 import static org.junit.Assert.assertEquals;
 
 

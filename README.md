@@ -20,6 +20,8 @@
 ###文件说明
 | 文件名  |  位置 |  说明 |
 | ------------ | ------------ | ------------ |
+| AbstractGym  |  cn.kengtion.Bean |  体育场抽象类 |
+| AbstractOrder  |  cn.kengtion.Bean | 订单抽象类  |
 | GymBean  |  cn.kengtion.Bean | 体育场对象，每个体育场实例管理自己的订单列表  |
 | OrderBean  | cn.kengtion.Bean  | 订单对象，定义了订单的基本信息并提供输出收入的接口  |
 | GymManager  | cn.kengtion.Utils  | 体育场管理类，执行命令的入口  |

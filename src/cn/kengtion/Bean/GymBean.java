@@ -1,58 +1,54 @@
 package cn.kengtion.Bean;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by 洪坤峰 on 2017/9/9.
+ * Created by 洪坤峰 on 2017/9/11.
  */
-public class GymBean {
+public class GymBean extends AbstractGym {
+    /*
+        订单表
+     */
+    private List<AbstractOrder> abstractOrderList = new ArrayList<>(50);//设定一个较大的初始容量减少ArrayList扩容耗时
     /*
         体育馆编号
      */
     private char Tag;
-
-    /*
-        订单表
-     */
-    private List<OrderBean> orderBeanList = new ArrayList<>(50);//设定一个较大的初始容量减少ArrayList扩容耗时
-
     /*
         本场馆总收入
-     */
+    */
     private int totalIncome = 0;
 
+    @Override
     /**
      * 执行预定命令.
      *
      * @param order 订单
      * @return 执行状态 true为成功，false为失败
      */
-    public boolean bookGym(OrderBean order) {
-        for (OrderBean orderExist : orderBeanList) {
+    public boolean bookGym(AbstractOrder order) {
+        for (AbstractOrder orderExist : abstractOrderList) {
             if (!orderExist.isCanceld() && isConflict(order, orderExist))
                 return false;
         }
-        orderBeanList.add(order);
+        abstractOrderList.add(order);
         return true;
     }
 
-
+    @Override
     /**
      * 执行取消预定命令
      *
      * @param order 待取消的订单信息
      * @return 执行结果 true为成功，false为不存在该订单，失败
      */
-    public boolean cancelBook(OrderBean order) {
-        for (OrderBean orderBean : orderBeanList) {
-            if (orderBean.equals(order) && !orderBean.isCanceld()) {
-                orderBean.setCanceld(true);
-                orderBean.setIncome(orderBean.getIncome() * (orderBean.isWeekend() ? 0.25 : 0.5));
+    public boolean cancelBook(AbstractOrder order) {
+        for (AbstractOrder abstractOrder : abstractOrderList) {
+            if (abstractOrder.equals(order) && !abstractOrder.isCanceld()) {
+                abstractOrder.setCanceld(true);
+                abstractOrder.setIncome(abstractOrder.getIncome() * (abstractOrder.isWeekend() ? 0.25 : 0.5));
                 return true;
             }
         }
@@ -67,42 +63,13 @@ public class GymBean {
     public String getOutput() {
         StringBuilder sb = new StringBuilder();
         sb.append("场地:").append(Tag).append("\n");
-        Collections.sort(orderBeanList);
-        for (OrderBean orderBean : orderBeanList) {
-            sb.append(orderBean.getOutput());
-            totalIncome += orderBean.getIncome();
+        Collections.sort(abstractOrderList);
+        for (AbstractOrder abstractOrder : abstractOrderList) {
+            sb.append(abstractOrder.getOutput());
+            totalIncome += abstractOrder.getIncome();
         }
         sb.append("⼩计： ").append(totalIncome).append("元\n");
         return sb.toString();
-    }
-
-    /* ------------Getter and Setter ---------------*/
-
-    /**
-     * Gets tag.
-     *
-     * @return the tag
-     */
-    public char getTag() {
-        return Tag;
-    }
-
-    /**
-     * Sets tag.
-     *
-     * @param tag the tag
-     */
-    public void setTag(char tag) {
-        Tag = tag;
-    }
-
-    /**
-     * Gets total income.
-     *
-     * @return the total income
-     */
-    public int getTotalIncome() {
-        return totalIncome;
     }
 
     /**
@@ -113,7 +80,7 @@ public class GymBean {
      * @return true-冲突
      * false-不冲突
      */
-    public boolean isConflict(OrderBean order, OrderBean orderExist) {
+    public boolean isConflict(AbstractOrder order, AbstractOrder orderExist) {
         if (order.getStartHour() < orderExist.getEndHour() &&
                 order.getStartHour() > orderExist.getStartHour()) {
             return true;
@@ -123,5 +90,24 @@ public class GymBean {
             return true;
         }
         return false;
+    }
+
+    /*------------getter and setter-------------*/
+
+    public char getTag() {
+        return Tag;
+    }
+
+    @Override
+    public void setTag(char tag) {
+        Tag = tag;
+    }
+
+    public int getTotalIncome() {
+        return totalIncome;
+    }
+
+    public void setTotalIncome(int totalIncome) {
+        this.totalIncome = totalIncome;
     }
 }
