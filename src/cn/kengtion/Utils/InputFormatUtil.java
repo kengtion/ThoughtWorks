@@ -46,8 +46,16 @@ public class InputFormatUtil {
      * @return the boolean
      */
     public static boolean matchPattern(String input) {
-        String yearPattern = "(\\S+) ((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29) ) (\\d{2}:00~(\\d{2}):00) [ABCD]( C)?$";
-        return Pattern.matches(yearPattern, input);
+        String userIdpattern = "^(\\S+) ";
+        String datePattern = "((\\d{2}(([02468][048])|([13579][26]))"
+                + "[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|"
+                + "(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?"
+                + "((0?[1-9])|([1-2][0-9])))))|(\\d{2}(([02468][1235679])|([13579][01345789]))[\\-\\/\\s]?("
+                + "(((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?"
+                + "((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))";
+        String endPattern = " (\\d{2}:00)~(\\d{2}:00) [ABCD]( C)?";
+        String pattern = userIdpattern + datePattern + endPattern;
+        return Pattern.matches(pattern, input);
     }
 
     /**
@@ -58,7 +66,7 @@ public class InputFormatUtil {
      */
     public static boolean inputCheck(String[] params) {
         int[] hours = getStartHourAndEndHour(params[2]);
-        if (hours[0] >= hours[1] ||hours[0]<9||hours[1]>22)
+        if (hours[0] >= hours[1] || hours[0] < 9 || hours[1] > 22)
             return false;
         return true;
     }

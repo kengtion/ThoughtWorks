@@ -11,13 +11,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         while (true){
             String command = sc.nextLine();
-            if("".equals(command)){
-                manager.outputIncome();
-                continue;
-            }else {
-                manager.executeCommand(command);
-                continue;
-            }
+            manager.executeCommand(command);
         }
     }
 }

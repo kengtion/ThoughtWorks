@@ -4,17 +4,24 @@ package cn.kengtion.Bean;
  * Created by 洪坤峰 on 2017/9/9.
  * 订单实体
  */
-public class OrderBean {
+public class OrderBean implements Comparable<OrderBean> {
 
     /**
-     * 命令格式错误或者冲突
+     * 命令格式错误
      */
-    public static final String reject = "Error: the booking is invalid!\n";
+    public static final String invalid = "Error: the booking is invalid!\n";
     /**
      * 命令格式正确，接受并执行.
      */
     public static final String accept = "Success: the booking is accepted!\n";
-
+    /**
+     * 命令冲突
+     */
+    public static final String conflit = "Error: the booking conflicts with existing bookings!\n";
+    /**
+     * 订单不存在
+     */
+    public static final String notExist = "Error: the booking being cancelled does not exist!\n";
     /*
         用户ID
      */
@@ -65,7 +72,7 @@ public class OrderBean {
      * @method
      * @auther 创建人 ：洪坤峰
      * @auther 修改时间 ：
-     * @description：计算本预定实体带来的收入
+     * @description：计算订单带来的收入
      */
     public int calcuteIncome(int startHour, int endHour) {
         int income = 0;
@@ -121,10 +128,10 @@ public class OrderBean {
         if (isCanceld) {
             if (isWeekend) {
                 income = calcuteIncome(startHour, endHour) * 0.25;
-                sb.append("违约金 ").append(income).append("元\n");
+                sb.append("违约金 ").append((int) income).append("元\n");
             } else {
                 income = calcuteIncome(startHour, endHour) * 0.5;
-                sb.append("违约金 ").append(income).append("元\n");
+                sb.append("违约金 ").append((int) income).append("元\n");
             }
         } else {
             income = calcuteIncome(startHour, endHour);
@@ -306,5 +313,10 @@ public class OrderBean {
      */
     public void setIncome(double income) {
         this.income = income;
+    }
+
+    @Override
+    public int compareTo(OrderBean o) {
+        return (this.date + this.startHour).compareTo(o.getDate() + o.getStartHour());
     }
 }

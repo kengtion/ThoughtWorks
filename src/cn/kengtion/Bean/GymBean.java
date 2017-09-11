@@ -1,6 +1,9 @@
 package cn.kengtion.Bean;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,11 +15,6 @@ public class GymBean {
         体育馆编号
      */
     private char Tag;
-
-    /*
-        预定时间表
-     */
-    private HashMap<String, boolean[]> dateList = new HashMap();
 
     /*
         订单表
@@ -35,23 +33,12 @@ public class GymBean {
      * @return 执行状态 true为成功，false为失败
      */
     public boolean bookGym(OrderBean order) {
-        boolean[] bookedTime;
-        if ((bookedTime = dateList.get(order.getDate())) != null) {
-            for (int i = order.getStartHour() - 1; i < order.getEndHour(); i++) {
-                if (bookedTime[i])
-                    return false;
-            }
-            orderBeanList.add(order);
-            return true;
-        } else {
-            String date = order.getDate();
-            bookedTime = new boolean[24];
-            bookedTime[order.getStartHour()] = true;
-            bookedTime[order.getEndHour()] = true;
-            dateList.put(date, bookedTime);
-            orderBeanList.add(order);
-            return true;
+        for (OrderBean orderExist : orderBeanList) {
+            if (!orderExist.isCanceld() && isConflict(order, orderExist))
+                return false;
         }
+        orderBeanList.add(order);
+        return true;
     }
 
 
@@ -63,9 +50,9 @@ public class GymBean {
      */
     public boolean cancelBook(OrderBean order) {
         for (OrderBean orderBean : orderBeanList) {
-            if (orderBean.equals(order)) {
+            if (orderBean.equals(order) && !orderBean.isCanceld()) {
                 orderBean.setCanceld(true);
-                orderBean.setIncome(orderBean.getIncome()*(orderBean.isWeekend()?0.25:0.5));
+                orderBean.setIncome(orderBean.getIncome() * (orderBean.isWeekend() ? 0.25 : 0.5));
                 return true;
             }
         }
@@ -80,6 +67,7 @@ public class GymBean {
     public String getOutput() {
         StringBuilder sb = new StringBuilder();
         sb.append("场地:").append(Tag).append("\n");
+        Collections.sort(orderBeanList);
         for (OrderBean orderBean : orderBeanList) {
             sb.append(orderBean.getOutput());
             totalIncome += orderBean.getIncome();
@@ -115,5 +103,25 @@ public class GymBean {
      */
     public int getTotalIncome() {
         return totalIncome;
+    }
+
+    /**
+     * 判断订单是否冲突
+     *
+     * @param order      the order
+     * @param orderExist the order exist
+     * @return true-冲突
+     * false-不冲突
+     */
+    public boolean isConflict(OrderBean order, OrderBean orderExist) {
+        if (order.getStartHour() < orderExist.getEndHour() &&
+                order.getStartHour() > orderExist.getStartHour()) {
+            return true;
+        } else if (order.getEndHour() < orderExist.getEndHour() && order.getEndHour() > orderExist.getStartHour()) {
+            return true;
+        } else if (order.getStartHour() < orderExist.getStartHour() && orderExist.getEndHour() < order.getEndHour()) {
+            return true;
+        }
+        return false;
     }
 }
