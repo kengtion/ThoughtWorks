@@ -8,18 +8,7 @@ import java.util.List;
  * Created by 洪坤峰 on 2017/9/11.
  */
 public class GymBean extends AbstractGym {
-    /*
-        订单表
-     */
-    private List<AbstractOrder> abstractOrderList = new ArrayList<>(50);//设定一个较大的初始容量减少ArrayList扩容耗时
-    /*
-        体育馆编号
-     */
-    private char Tag;
-    /*
-        本场馆总收入
-    */
-    private int totalIncome = 0;
+
 
     @Override
     /**
@@ -72,6 +61,16 @@ public class GymBean extends AbstractGym {
         return sb.toString();
     }
 
+    @Override
+    public void setTag(char tag) {
+        this.Tag = tag;
+    }
+
+    @Override
+    public int getTotalIncome() {
+        return totalIncome;
+    }
+
     /**
      * 判断订单是否冲突
      *
@@ -92,22 +91,5 @@ public class GymBean extends AbstractGym {
         return false;
     }
 
-    /*------------getter and setter-------------*/
 
-    public char getTag() {
-        return Tag;
-    }
-
-    @Override
-    public void setTag(char tag) {
-        Tag = tag;
-    }
-
-    public int getTotalIncome() {
-        return totalIncome;
-    }
-
-    public void setTotalIncome(int totalIncome) {
-        this.totalIncome = totalIncome;
-    }
 }

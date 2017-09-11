@@ -10,6 +10,18 @@ import java.util.List;
  */
 public abstract class AbstractGym {
 
+    /*
+        订单表
+     */
+    protected List<AbstractOrder> abstractOrderList = new ArrayList<>(50);//设定一个较大的初始容量减少ArrayList扩容耗时
+    /*
+        体育馆编号
+     */
+    protected char Tag;
+    /*
+        本场馆总收入
+    */
+    protected int totalIncome = 0;
 
     /**
      * 执行预定命令.
@@ -49,5 +61,15 @@ public abstract class AbstractGym {
      * @return the total income
      */
     public abstract int getTotalIncome();
+
+     /*------------getter and setter-------------*/
+
+    public char getTag() {
+        return Tag;
+    }
+
+    public void setTotalIncome(int totalIncome) {
+        this.totalIncome = totalIncome;
+    }
 
 }
