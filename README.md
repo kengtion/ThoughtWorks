@@ -7,8 +7,6 @@
 [TOC]
 
 # 运行说明
-##导入项目
-git clone https://github.com/kengtion/ThoughtWorks.git
 ##系统环境
 本项目使用Java语言开发，JDK版本为jdk1.7.0_79,使用的IDE为Intellij IDEA 2017.1.4，JUnit版本为junit-4.12
 ##主程序
