@@ -11,12 +11,15 @@ import java.util.regex.Pattern;
 
 /**
  * Created by 洪坤峰 on 2017/9/9.
- * 输入输出格式化工具
+ * 输入格式化工具
  */
 public class InputFormatUtil {
 
-    /*
-        根据输入生成订单
+    /**
+     * 根据输入生成订单信息
+     *
+     * @param input the input
+     * @return the order bean
      */
     public static OrderBean generateOrder(String input) {
         OrderBean order = new OrderBean();
@@ -36,26 +39,35 @@ public class InputFormatUtil {
         return order;
     }
 
-    /*
-        输入格式检查
+    /**
+     * 判断输入的格式是否符合要求.
+     *
+     * @param input the input
+     * @return the boolean
      */
-    public static boolean matchPattern(String input){
+    public static boolean matchPattern(String input) {
         String yearPattern = "(\\S+) ((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29) ) (\\d{2}:00~(\\d{2}):00) [ABCD]( C)?$";
-        return Pattern.matches(yearPattern ,input);
+        return Pattern.matches(yearPattern, input);
     }
 
-    /*
-        输入有效性检查
+    /**
+     * 检查输入的参数是否合法
+     *
+     * @param params the params
+     * @return the boolean
      */
     public static boolean inputCheck(String[] params) {
         int[] hours = getStartHourAndEndHour(params[2]);
-        if(hours[0]>=hours[1])
+        if (hours[0] >= hours[1] ||hours[0]<9||hours[1]>22)
             return false;
         return true;
     }
 
-    /*
-        从String中读取开始时间和结束时间
+    /**
+     * 根据输入的参数获取订单起始时间
+     *
+     * @param param the param
+     * @return the int [ ]  [0]为开始时间，[1]为结束时间
      */
     public static int[] getStartHourAndEndHour(String param) {
         int[] result = new int[2];
@@ -65,7 +77,13 @@ public class InputFormatUtil {
     }
 
 
-    //根据参数ABCD获取对应编号
+    /**
+     * 根据输入获取预定的体育馆编号
+     * A-0 B-1 C-2 D-3
+     *
+     * @param tag the tag
+     * @return the index
+     */
     public static int getIndex(String tag) {
         switch (tag) {
             case "A":
@@ -80,7 +98,12 @@ public class InputFormatUtil {
         return -1;
     }
 
-    //根据日期判断是否为周末
+    /**
+     * 判断输入的日期是否是周末.
+     *
+     * @param param the param
+     * @return the boolean
+     */
     public static boolean isWeekend(String param) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;

@@ -2,8 +2,8 @@ package cn.kengtion.Bean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+
 /**
  * Created by 洪坤峰 on 2017/9/9.
  */
@@ -28,8 +28,11 @@ public class GymBean {
      */
     private int totalIncome = 0;
 
-    /*
-        预定体育场
+    /**
+     * 执行预定命令.
+     *
+     * @param order 订单
+     * @return 执行状态 true为成功，false为失败
      */
     public boolean bookGym(OrderBean order) {
         boolean[] bookedTime;
@@ -51,8 +54,12 @@ public class GymBean {
         }
     }
 
-    /*
-        取消预定
+
+    /**
+     * 执行取消预定命令
+     *
+     * @param order 待取消的订单信息
+     * @return 执行结果 true为成功，false为不存在该订单，失败
      */
     public boolean cancelBook(OrderBean order) {
         for (OrderBean orderBean : orderBeanList) {
@@ -65,17 +72,17 @@ public class GymBean {
         return false;
     }
 
-    /*
-        重载toString输出收入
+    /**
+     * 获取体育馆的收入输出字符串
+     *
+     * @return the output
      */
-    @Override
-    public String toString() {
+    public String getOutput() {
         StringBuilder sb = new StringBuilder();
         sb.append("场地:").append(Tag).append("\n");
-        totalIncome = 0;
         for (OrderBean orderBean : orderBeanList) {
+            sb.append(orderBean.getOutput());
             totalIncome += orderBean.getIncome();
-            sb.append(orderBean.toString());
         }
         sb.append("⼩计： ").append(totalIncome).append("元\n");
         return sb.toString();
@@ -83,14 +90,29 @@ public class GymBean {
 
     /* ------------Getter and Setter ---------------*/
 
+    /**
+     * Gets tag.
+     *
+     * @return the tag
+     */
     public char getTag() {
         return Tag;
     }
 
+    /**
+     * Sets tag.
+     *
+     * @param tag the tag
+     */
     public void setTag(char tag) {
         Tag = tag;
     }
 
+    /**
+     * Gets total income.
+     *
+     * @return the total income
+     */
     public int getTotalIncome() {
         return totalIncome;
     }

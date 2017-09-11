@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
         GymManager manager = new GymManager();
         Scanner sc = new Scanner(System.in);
         while (true){
